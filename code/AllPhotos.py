@@ -13,28 +13,28 @@ class AllPhotos:
 
 
     def init(screenParameters):
-        AllPhotos.cur_map = Image.new(mode='RGBA', size=(screenParameters[1], screenParameters[1]), color='WHITE')
-        AllPhotos.map_choice = Image.new(mode='RGBA', size=(screenParameters[1], screenParameters[1]), color='WHITE')
-        map_names = ['ascend', 'bind', 'fracture', 'haven', 'lotus', 'pearl', 'split']
+        AllPhotos.cur_map = Image.new(mode='RGBA', size=(screenParameters[1] * 3 // 4, screenParameters[1] * 3 // 4), color='WHITE')
+        AllPhotos.map_choice = Image.new(mode='RGBA', size=(screenParameters[1] // 4 * 3, screenParameters[1]), color='WHITE')
+        map_names = ['ascend', 'bind', 'breeze', 'fracture', 'haven', 'icebox', 'lotus', 'pearl', 'split', 'sunset']
         map_images = []
-        img_choice = Image.new(mode='RGBA', size=(screenParameters[1], screenParameters[1]), color='WHITE')
+        img_choice = Image.new(mode='RGBA', size=(screenParameters[1] // 4 * 3, screenParameters[1]), color='WHITE')
 
-        for i in range(7):
+        for i in range(len(map_names)):
             map_images.append(Image.open("data/" + map_names[i] + "_map.png"))
-            map_images[i].thumbnail((screenParameters[1], screenParameters[1]))
+            map_images[i].thumbnail((screenParameters[1] * 3 // 4, screenParameters[1] * 3 // 4))
             AllPhotos.maps.append(ImageTk.PhotoImage(map_images[i]))
         AllPhotos.map_images = map_images.copy()
 
-        for i in range(7):
+        for i in range(len(map_names)):
             tmp = map_images[i].copy()
-            tmp.thumbnail((screenParameters[1] // 3, screenParameters[1] // 3))
-            img_choice.paste(tmp, (screenParameters[1] // 3 * (i % 3), screenParameters[1] // 3 * (i // 3)))
+            tmp.thumbnail((screenParameters[1] // 4, screenParameters[1] // 4))
+            img_choice.paste(tmp, (screenParameters[1] // 4 * (i % 3), screenParameters[1] // 4 * (i // 3)))
             AllPhotos.map_choice = ImageTk.PhotoImage(img_choice)
 
         tasks = len(next(os.walk('data/screen_set'))[2])
         for i in range(tasks):
             tmp = Image.open("data/screen_set/scr" + str(i + 1) + ".png")
-            tmp.thumbnail((screenParameters[1], screenParameters[1]))
+            tmp.thumbnail((screenParameters[1] * 4 // 3, screenParameters[1] * 4 // 3))
             AllPhotos.screens.append(ImageTk.PhotoImage(tmp))
         print("tasks=" + str(tasks))
 

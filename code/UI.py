@@ -42,13 +42,13 @@ class Window:
         Window.back_btn.configure(state='disable')
 
     def click_handler(self, event):
-        self.target_xy = (event.x, event.y)
-        self.map_label.configure(image=AllPhotos.add_target(AllPhotos, event.x, event.y))
-        print("clicked x,y = " + str(event.x) + ', ' + str(event.y))
+        self.target_xy = (event.x, event.y - Consts.screen_parameters[1] // 8)
+        self.map_label.configure(image=AllPhotos.add_target(AllPhotos, self.target_xy[0], self.target_xy[1]))
+        print("clicked x,y = " + str(self.target_xy[0]) + ', ' + str(self.target_xy[1]))
 
     def map_choice(self, event):
-        map_num = event.x // (Consts.screen_parameters[1] // 3) + (event.y // (Consts.screen_parameters[1] // 3) * 3)
-        if map_num <= 7:
+        map_num = event.x // (Consts.screen_parameters[1]  // 4) + (event.y // (Consts.screen_parameters[1] // 4) * 3)
+        if map_num <= 10:
             AllPhotos.map_num = map_num
             self.map_label.configure(image=AllPhotos.maps[map_num])
             self.map_label.bind("<Button-1>", self.click_handler)
@@ -56,7 +56,7 @@ class Window:
 
     def get_ans(self):
         answers = []
-        with open("ans.gay", 'r') as f:
+        with open("ans.mem", 'r') as f:
             tmp = f.readline()
             while tmp:
                 cor = tmp.split()
@@ -67,7 +67,7 @@ class Window:
         return answers
 
     def set_ans(self, answers):
-        with open("ans.gay", 'w') as f:
+        with open("ans.mem", 'w') as f:
             for i in answers:
                 code = []
                 code.append(i[0])
@@ -90,10 +90,10 @@ class Window:
 
     AllPhotos.init(Consts.screen_parameters)
 
-    screen_label = Label(root, image=AllPhotos.screens[0], width=Consts.screen_parameters[1], height=Consts.screen_parameters[1])
+    screen_label = Label(root, image=AllPhotos.screens[0], width=Consts.screen_parameters[1] * 4 // 3, height=Consts.screen_parameters[1])
     screen_label.pack(fill=None, anchor='w', side='left')
 
-    map_label = Label(root, image=AllPhotos.map_choice, width=Consts.screen_parameters[1], height=Consts.screen_parameters[1])
+    map_label = Label(root, image=AllPhotos.map_choice, width=Consts.screen_parameters[1] // 4 * 3, height=Consts.screen_parameters[1])
     map_label.pack(fill=None, anchor='w', side='left')
 
     apply_btn = Button(root, text="Apply", width=14)
@@ -122,5 +122,3 @@ class Window:
         self.root.mainloop()
 
 
-
-    #root.mainloop()
